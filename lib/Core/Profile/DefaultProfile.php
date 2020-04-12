@@ -81,11 +81,13 @@ class DefaultProfile implements IClientProfile
 
     public static function findEndpointByName($endpointName)
     {
-        foreach (self::$endpoints as $key => $endpoint) {
+        foreach ((array)self::$endpoints as $key => $endpoint) {
             if ($endpoint->getName() == $endpointName) {
                 return $endpoint;
             }
         }
+
+        return null;
     }
 
     private static function addEndpoint_($endpointName, $regionId, $product, $domain)
@@ -93,6 +95,9 @@ class DefaultProfile implements IClientProfile
         $regionIds = [$regionId];
         $productDomains = [new ProductDomain($product, $domain)];
         $endpoint = new Endpoint($endpointName, $regionIds, $productDomains);
+        if (is_null(self::$endpoints)) {
+            self::$endpoints = [];
+        }
         array_push(self::$endpoints, $endpoint);
     }
 
