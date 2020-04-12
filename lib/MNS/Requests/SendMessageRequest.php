@@ -5,6 +5,7 @@ use AliyunMNS\Constants;
 use AliyunMNS\Requests\BaseRequest;
 use AliyunMNS\Model\QueueAttributes;
 use AliyunMNS\Traits\MessagePropertiesForSend;
+use XMLWriter;
 
 class SendMessageRequest extends BaseRequest
 {
@@ -15,11 +16,11 @@ class SendMessageRequest extends BaseRequest
     // boolean, whether the message body will be encoded in base64
     private $base64;
 
-    public function __construct($messageBody, $delaySeconds = NULL, $priority = NULL, $base64 = TRUE)
+    public function __construct($messageBody, $delaySeconds = null, $priority = null, $base64 = true)
     {
-        parent::__construct('post', NULL);
+        parent::__construct('post', null);
 
-        $this->queueName = NULL;
+        $this->queueName = null;
         $this->messageBody = $messageBody;
         $this->delaySeconds = $delaySeconds;
         $this->priority = $priority;
@@ -33,7 +34,7 @@ class SendMessageRequest extends BaseRequest
 
     public function isBase64()
     {
-        return ($this->base64 == TRUE);
+        return ($this->base64 == true);
     }
 
     public function setQueueName($queueName)
@@ -49,10 +50,10 @@ class SendMessageRequest extends BaseRequest
 
     public function generateBody()
     {
-        $xmlWriter = new \XMLWriter;
+        $xmlWriter = new XMLWriter;
         $xmlWriter->openMemory();
         $xmlWriter->startDocument("1.0", "UTF-8");
-        $xmlWriter->startElementNS(NULL, "Message", Constants::MNS_XML_NAMESPACE);
+        $xmlWriter->startElementNS(null, "Message", Constants::MNS_XML_NAMESPACE);
         $this->writeMessagePropertiesForSendXML($xmlWriter, $this->base64);
         $xmlWriter->endElement();
         $xmlWriter->endDocument();
@@ -61,7 +62,6 @@ class SendMessageRequest extends BaseRequest
 
     public function generateQueryString()
     {
-        return NULL;
+        return null;
     }
 }
-?>

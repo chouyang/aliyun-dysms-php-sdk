@@ -72,5 +72,3 @@ class Constants
     const SUBSCRIPTION_ALREADY_EXIST = "SubscriptionAlreadyExist";
     const SUBSCRIPTION_NOT_EXIST = "SubscriptionNotExist";
 }
-
-?>

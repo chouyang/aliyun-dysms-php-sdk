@@ -30,12 +30,11 @@ class BatchPeekMessageRequest extends BaseRequest
 
     public function generateBody()
     {
-        return NULL;
+        return null;
     }
 
     public function generateQueryString()
     {
-        return http_build_query(array("numOfMessages" => $this->numOfMessages, "peekonly" => "true"));
+        return http_build_query(["numOfMessages" => $this->numOfMessages, "peekonly" => "true"]);
     }
 }
-?>

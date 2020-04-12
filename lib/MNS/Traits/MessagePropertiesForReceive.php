@@ -3,6 +3,7 @@ namespace AliyunMNS\Traits;
 
 use AliyunMNS\Model\Message;
 use AliyunMNS\Traits\MessagePropertiesForPeek;
+use XMLReader;
 
 trait MessagePropertiesForReceive
 {
@@ -15,7 +16,7 @@ trait MessagePropertiesForReceive
         return $this->receiptHandle;
     }
 
-    public function readMessagePropertiesForReceiveXML(\XMLReader $xmlReader, $base64)
+    public function readMessagePropertiesForReceiveXML(XMLReader $xmlReader, $base64)
     {
         $message = Message::fromXML($xmlReader, $base64);
         $this->messageId = $message->getMessageId();
@@ -29,5 +30,3 @@ trait MessagePropertiesForReceive
         $this->receiptHandle = $message->getReceiptHandle();
     }
 }
-
-?>

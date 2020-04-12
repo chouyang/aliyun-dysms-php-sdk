@@ -4,6 +4,7 @@ namespace AliyunMNS\Requests;
 use AliyunMNS\Constants;
 use AliyunMNS\Requests\BaseRequest;
 use AliyunMNS\Model\SubscriptionAttributes;
+use XMLWriter;
 
 class SubscribeRequest extends BaseRequest
 {
@@ -23,10 +24,10 @@ class SubscribeRequest extends BaseRequest
 
     public function generateBody()
     {
-        $xmlWriter = new \XMLWriter;
+        $xmlWriter = new XMLWriter;
         $xmlWriter->openMemory();
         $xmlWriter->startDocument("1.0", "UTF-8");
-        $xmlWriter->startElementNS(NULL, "Subscription", Constants::MNS_XML_NAMESPACE);
+        $xmlWriter->startElementNS(null, "Subscription", Constants::MNS_XML_NAMESPACE);
         $this->attributes->writeXML($xmlWriter);
         $xmlWriter->endElement();
         $xmlWriter->endDocument();
@@ -35,8 +36,6 @@ class SubscribeRequest extends BaseRequest
 
     public function generateQueryString()
     {
-        return NULL;
+        return null;
     }
 }
-
-?>

@@ -65,12 +65,9 @@ class Topic
 
     public function generateSmsEndpoint($phone = null)
     {
-        if ($phone)
-        {
+        if ($phone) {
             return "sms:directsms:" . $phone;
-        }
-        else
-        {
+        } else {
             return "sms:directsms:anonymous";
         }
     }
@@ -117,12 +114,10 @@ class Topic
         return $this->client->sendRequest($request, $response);
     }
 
-    public function listSubscription($retNum = NULL, $prefix = NULL, $marker = NULL)
+    public function listSubscription($retNum = null, $prefix = null, $marker = null)
     {
         $request = new ListSubscriptionRequest($this->topicName, $retNum, $prefix, $marker);
         $response = new ListSubscriptionResponse();
         return $this->client->sendRequest($request, $response);
     }
 }
-
-?>

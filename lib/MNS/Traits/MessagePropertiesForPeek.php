@@ -4,6 +4,7 @@ namespace AliyunMNS\Traits;
 use AliyunMNS\Constants;
 use AliyunMNS\Traits\MessageIdAndMD5;
 use AliyunMNS\Model\Message;
+use XMLReader;
 
 trait MessagePropertiesForPeek
 {
@@ -46,7 +47,7 @@ trait MessagePropertiesForPeek
         return $this->priority;
     }
 
-    public function readMessagePropertiesForPeekXML(\XMLReader $xmlReader, $base64)
+    public function readMessagePropertiesForPeekXML(XMLReader $xmlReader, $base64)
     {
         $message = Message::fromXML($xmlReader, $base64);
         $this->messageId = $message->getMessageId();
@@ -59,5 +60,3 @@ trait MessagePropertiesForPeek
         $this->priority = $message->getPriority();
     }
 }
-
-?>

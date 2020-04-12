@@ -43,23 +43,21 @@ class Client
      * @param securityToken: securityToken from aliyun.com
      * @param config: necessary configs
      */
-    public function __construct($endPoint, $accessId,
-        $accessKey, $securityToken = NULL, Config $config = NULL)
+    public function __construct($endPoint, $accessId, $accessKey, $securityToken = null, Config $config = null)
     {
-        $this->client = new HttpClient($endPoint, $accessId,
-            $accessKey, $securityToken, $config);
+        $this->client = new HttpClient($endPoint, $accessId, $accessKey, $securityToken, $config);
     }
 
     /**
      * Returns a queue reference for operating on the queue
      * this function does not create the queue automatically.
      *
-     * @param string $queueName:  the queue name
-     * @param bool $base64: whether the message in queue will be base64 encoded
+     * @param string $queueName :  the queue name
+     * @param bool   $base64    : whether the message in queue will be base64 encoded
      *
      * @return Queue $queue: the Queue instance
      */
-    public function getQueueRef($queueName, $base64 = TRUE)
+    public function getQueueRef($queueName, $base64 = true)
     {
         return new Queue($this->client, $queueName, $base64);
     }
@@ -67,7 +65,7 @@ class Client
     /**
      * Create Queue and Returns the Queue reference
      *
-     * @param CreateQueueRequest $request:  the QueueName and QueueAttributes
+     * @param CreateQueueRequest $request :  the QueueName and QueueAttributes
      *
      * @return CreateQueueResponse $response: the CreateQueueResponse
      *
@@ -85,15 +83,15 @@ class Client
      * Create Queue and Returns the Queue reference
      * The request will not be sent until calling MnsPromise->wait();
      *
-     * @param CreateQueueRequest $request:  the QueueName and QueueAttributes
-     * @param AsyncCallback $callback:  the Callback when the request finishes
+     * @param CreateQueueRequest $request  :  the QueueName and QueueAttributes
+     * @param AsyncCallback      $callback :  the Callback when the request finishes
      *
      * @return MnsPromise $promise: the MnsPromise instance
      *
      * @throws MnsException if any exception happends
      */
     public function createQueueAsync(CreateQueueRequest $request,
-        AsyncCallback $callback = NULL)
+                                     AsyncCallback $callback = null)
     {
         $response = new CreateQueueResponse($request->getQueueName());
         return $this->client->sendRequestAsync($request, $response, $callback);
@@ -102,7 +100,7 @@ class Client
     /**
      * Query the queues created by current account
      *
-     * @param ListQueueRequest $request: define filters for quering queues
+     * @param ListQueueRequest $request : define filters for quering queues
      *
      * @return ListQueueResponse: the response containing queueNames
      */
@@ -113,7 +111,7 @@ class Client
     }
 
     public function listQueueAsync(ListQueueRequest $request,
-        AsyncCallback $callback = NULL)
+                                   AsyncCallback $callback = null)
     {
         $response = new ListQueueResponse();
         return $this->client->sendRequestAsync($request, $response, $callback);
@@ -123,7 +121,7 @@ class Client
      * Delete the specified queue
      * the request will succeed even when the queue does not exist
      *
-     * @param $queueName: the queueName
+     * @param $queueName : the queueName
      *
      * @return DeleteQueueResponse
      */
@@ -135,7 +133,7 @@ class Client
     }
 
     public function deleteQueueAsync($queueName,
-        AsyncCallback $callback = NULL)
+                                     AsyncCallback $callback = null)
     {
         $request = new DeleteQueueRequest($queueName);
         $response = new DeleteQueueResponse();
@@ -143,11 +141,12 @@ class Client
     }
 
     // API for Topic
+
     /**
      * Returns a topic reference for operating on the topic
      * this function does not create the topic automatically.
      *
-     * @param string $topicName:  the topic name
+     * @param string $topicName :  the topic name
      *
      * @return Topic $topic: the Topic instance
      */
@@ -159,7 +158,7 @@ class Client
     /**
      * Create Topic and Returns the Topic reference
      *
-     * @param CreateTopicRequest $request:  the TopicName and TopicAttributes
+     * @param CreateTopicRequest $request :  the TopicName and TopicAttributes
      *
      * @return CreateTopicResponse $response: the CreateTopicResponse
      *
@@ -177,7 +176,7 @@ class Client
      * Delete the specified topic
      * the request will succeed even when the topic does not exist
      *
-     * @param $topicName: the topicName
+     * @param $topicName : the topicName
      *
      * @return DeleteTopicResponse
      */
@@ -191,7 +190,7 @@ class Client
     /**
      * Query the topics created by current account
      *
-     * @param ListTopicRequest $request: define filters for quering topics
+     * @param ListTopicRequest $request : define filters for quering topics
      *
      * @return ListTopicResponse: the response containing topicNames
      */
@@ -214,7 +213,7 @@ class Client
         return $this->client->sendRequest($request, $response);
     }
 
-    public function getAccountAttributesAsync(AsyncCallback $callback = NULL)
+    public function getAccountAttributesAsync(AsyncCallback $callback = null)
     {
         $request = new GetAccountAttributesRequest();
         $response = new GetAccountAttributesResponse();
@@ -224,7 +223,7 @@ class Client
     /**
      * Set the AccountAttributes
      *
-     * @param AccountAttributes $attributes: the AccountAttributes to set
+     * @param AccountAttributes $attributes : the AccountAttributes to set
      *
      * @return SetAccountAttributesResponse: the response
      *
@@ -238,12 +237,10 @@ class Client
     }
 
     public function setAccountAttributesAsync(AccountAttributes $attributes,
-        AsyncCallback $callback = NULL)
+                                              AsyncCallback $callback = null)
     {
         $request = new SetAccountAttributesRequest($attributes);
         $response = new SetAccountAttributesResponse();
         return $this->client->sendRequestAsync($request, $response, $callback);
     }
 }
-
-?>

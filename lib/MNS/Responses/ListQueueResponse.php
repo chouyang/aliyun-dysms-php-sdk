@@ -4,6 +4,9 @@ namespace AliyunMNS\Responses;
 use AliyunMNS\Exception\MnsException;
 use AliyunMNS\Responses\BaseResponse;
 use AliyunMNS\Common\XMLParser;
+use Exception;
+use Throwable;
+use XMLReader;
 
 class ListQueueResponse extends BaseResponse
 {
@@ -12,13 +15,13 @@ class ListQueueResponse extends BaseResponse
 
     public function __construct()
     {
-        $this->queueNames = array();
-        $this->nextMarker = NULL;
+        $this->queueNames = [];
+        $this->nextMarker = null;
     }
 
     public function isFinished()
     {
-        return $this->nextMarker == NULL;
+        return $this->nextMarker == null;
     }
 
     public function getQueueNames()
@@ -39,36 +42,32 @@ class ListQueueResponse extends BaseResponse
             return;
         }
 
-        $this->succeed = TRUE;
+        $this->succeed = true;
         $xmlReader = $this->loadXmlContent($content);
 
         try {
-            while ($xmlReader->read())
-            {
-                if ($xmlReader->nodeType == \XMLReader::ELEMENT)
-                {
+            while ($xmlReader->read()) {
+                if ($xmlReader->nodeType == XMLReader::ELEMENT) {
                     switch ($xmlReader->name) {
-                    case 'QueueURL':
-                        $xmlReader->read();
-                        if ($xmlReader->nodeType == \XMLReader::TEXT)
-                        {
-                            $queueName = $this->getQueueNameFromQueueURL($xmlReader->value);
-                            $this->queueNames[] = $queueName;
-                        }
-                        break;
-                    case 'NextMarker':
-                        $xmlReader->read();
-                        if ($xmlReader->nodeType == \XMLReader::TEXT)
-                        {
-                            $this->nextMarker = $xmlReader->value;
-                        }
-                        break;
+                        case 'QueueURL':
+                            $xmlReader->read();
+                            if ($xmlReader->nodeType == XMLReader::TEXT) {
+                                $queueName = $this->getQueueNameFromQueueURL($xmlReader->value);
+                                $this->queueNames[] = $queueName;
+                            }
+                            break;
+                        case 'NextMarker':
+                            $xmlReader->read();
+                            if ($xmlReader->nodeType == XMLReader::TEXT) {
+                                $this->nextMarker = $xmlReader->value;
+                            }
+                            break;
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new MnsException($statusCode, $e->getMessage(), $e);
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             throw new MnsException($statusCode, $t->getMessage());
         }
     }
@@ -76,34 +75,31 @@ class ListQueueResponse extends BaseResponse
     private function getQueueNameFromQueueURL($queueURL)
     {
         $pieces = explode("/", $queueURL);
-        if (count($pieces) == 5)
-        {
+        if (count($pieces) == 5) {
             return $pieces[4];
         }
         return "";
     }
 
-    public function parseErrorResponse($statusCode, $content, MnsException $exception = NULL)
+    public function parseErrorResponse($statusCode, $content, MnsException $exception = null)
     {
-        $this->succeed = FALSE;
+        $this->succeed = false;
         $xmlReader = $this->loadXmlContent($content);
 
         try {
             $result = XMLParser::parseNormalError($xmlReader);
 
             throw new MnsException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
-        } catch (\Exception $e) {
-            if ($exception != NULL) {
+        } catch (Exception $e) {
+            if ($exception != null) {
                 throw $exception;
-            } elseif($e instanceof MnsException) {
+            } elseif ($e instanceof MnsException) {
                 throw $e;
             } else {
                 throw new MnsException($statusCode, $e->getMessage());
             }
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             throw new MnsException($statusCode, $t->getMessage());
         }
     }
 }
-
-?>

@@ -9,7 +9,7 @@ class ListTopicRequest extends BaseRequest
     private $prefix;
     private $marker;
 
-    public function __construct($retNum = NULL, $prefix = NULL, $marker = NULL)
+    public function __construct($retNum = null, $prefix = null, $marker = null)
     {
         parent::__construct('get', 'topics');
 
@@ -26,12 +26,9 @@ class ListTopicRequest extends BaseRequest
     public function setRetNum($retNum)
     {
         $this->retNum = $retNum;
-        if ($retNum != NULL)
-        {
+        if ($retNum != null) {
             $this->setHeader("x-mns-ret-number", $retNum);
-        }
-        else
-        {
+        } else {
             $this->removeHeader("x-mns-ret-number");
         }
     }
@@ -44,12 +41,9 @@ class ListTopicRequest extends BaseRequest
     public function setPrefix($prefix)
     {
         $this->prefis = $prefix;
-        if ($prefix != NULL)
-        {
+        if ($prefix != null) {
             $this->setHeader("x-mns-prefix", $prefix);
-        }
-        else
-        {
+        } else {
             $this->removeHeader("x-mns-prefix");
         }
     }
@@ -62,25 +56,20 @@ class ListTopicRequest extends BaseRequest
     public function setMarker($marker)
     {
         $this->marker = $marker;
-        if ($marker != NULL)
-        {
+        if ($marker != null) {
             $this->setHeader("x-mns-marker", $marker);
-        }
-        else
-        {
+        } else {
             $this->removeHeader("x-mns-marker");
         }
     }
 
     public function generateBody()
     {
-        return NULL;
+        return null;
     }
 
     public function generateQueryString()
     {
-        return NULL;
+        return null;
     }
 }
-
-?>

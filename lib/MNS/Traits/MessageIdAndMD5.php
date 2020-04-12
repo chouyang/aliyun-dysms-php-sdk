@@ -3,6 +3,7 @@ namespace AliyunMNS\Traits;
 
 use AliyunMNS\Constants;
 use AliyunMNS\Model\Message;
+use XMLReader;
 
 trait MessageIdAndMD5
 {
@@ -19,12 +20,12 @@ trait MessageIdAndMD5
         return $this->messageBodyMD5;
     }
 
-    public function readMessageIdAndMD5XML(\XMLReader $xmlReader)
+    public function readMessageIdAndMD5XML(XMLReader $xmlReader)
     {
-        $message = Message::fromXML($xmlReader, TRUE);
+        $message = Message::fromXML($xmlReader, true);
         $this->messageId = $message->getMessageId();
         $this->messageBodyMD5 = $message->getMessageBodyMD5();
     }
 }
 
-?>
+

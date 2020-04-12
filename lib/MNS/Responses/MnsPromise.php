@@ -32,8 +32,7 @@ class MnsPromise
     {
         try {
             $res = $this->promise->wait();
-            if ($res instanceof ResponseInterface)
-            {
+            if ($res instanceof ResponseInterface) {
                 $this->response->parseResponse($res->getStatusCode(), $res->getBody());
             }
         } catch (TransferException $e) {
@@ -46,5 +45,3 @@ class MnsPromise
         return $this->response;
     }
 }
-
-?>

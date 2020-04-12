@@ -10,6 +10,8 @@ use AliyunMNS\Exception\ReceiptHandleErrorException;
 use AliyunMNS\Responses\BaseResponse;
 use AliyunMNS\Common\XMLParser;
 use AliyunMNS\Model\Message;
+use Exception;
+use Throwable;
 
 class ChangeMessageVisibilityResponse extends BaseResponse
 {
@@ -34,7 +36,7 @@ class ChangeMessageVisibilityResponse extends BaseResponse
     {
         $this->statusCode = $statusCode;
         if ($statusCode == 200) {
-            $this->succeed = TRUE;
+            $this->succeed = true;
         } else {
             $this->parseErrorResponse($statusCode, $content);
         }
@@ -42,55 +44,49 @@ class ChangeMessageVisibilityResponse extends BaseResponse
         $xmlReader = $this->loadXmlContent($content);
 
         try {
-            $message = Message::fromXML($xmlReader, TRUE);
+            $message = Message::fromXML($xmlReader, true);
             $this->receiptHandle = $message->getReceiptHandle();
             $this->nextVisibleTime = $message->getNextVisibleTime();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new MnsException($statusCode, $e->getMessage(), $e);
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             throw new MnsException($statusCode, $t->getMessage());
         }
     }
 
-    public function parseErrorResponse($statusCode, $content, MnsException $exception = NULL)
+    public function parseErrorResponse($statusCode, $content, MnsException $exception = null)
     {
-        $this->succeed = FALSE;
+        $this->succeed = false;
         $xmlReader = $this->loadXmlContent($content);
 
         try {
             $result = XMLParser::parseNormalError($xmlReader);
 
-            if ($result['Code'] == Constants::INVALID_ARGUMENT)
-            {
+            if ($result['Code'] == Constants::INVALID_ARGUMENT) {
                 throw new InvalidArgumentException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
             }
-            if ($result['Code'] == Constants::QUEUE_NOT_EXIST)
-            {
+            if ($result['Code'] == Constants::QUEUE_NOT_EXIST) {
                 throw new QueueNotExistException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
             }
-            if ($result['Code'] == Constants::MESSAGE_NOT_EXIST)
-            {
+            if ($result['Code'] == Constants::MESSAGE_NOT_EXIST) {
                 throw new MessageNotExistException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
             }
-            if ($result['Code'] == Constants::RECEIPT_HANDLE_ERROR)
-            {
+            if ($result['Code'] == Constants::RECEIPT_HANDLE_ERROR) {
                 throw new ReceiptHandleErrorException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
             }
 
             throw new MnsException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
-        } catch (\Exception $e) {
-            if ($exception != NULL) {
+        } catch (Exception $e) {
+            if ($exception != null) {
                 throw $exception;
-            } elseif($e instanceof MnsException) {
+            } elseif ($e instanceof MnsException) {
                 throw $e;
             } else {
                 throw new MnsException($statusCode, $e->getMessage());
             }
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             throw new MnsException($statusCode, $t->getMessage());
         }
 
     }
 }
-
-?>

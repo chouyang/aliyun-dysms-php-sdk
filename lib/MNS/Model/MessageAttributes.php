@@ -2,6 +2,7 @@
 namespace AliyunMNS\Model;
 
 use AliyunMNS\Constants;
+use XMLWriter;
 
 /**
  * Please refer to
@@ -14,7 +15,7 @@ class MessageAttributes
     private $attributes;
 
     public function __construct(
-        $attributes = NULL)
+        $attributes = null)
     {
         $this->attributes = $attributes;
     }
@@ -29,25 +30,18 @@ class MessageAttributes
         return $this->attributes;
     }
 
-    public function writeXML(\XMLWriter $xmlWriter)
+    public function writeXML(XMLWriter $xmlWriter)
     {
         $xmlWriter->startELement(Constants::MESSAGE_ATTRIBUTES);
-        if ($this->attributes != NULL)
-        {
-            if (is_array($this->attributes))
-            {
-                foreach ($this->attributes as $subAttributes)
-                {
+        if ($this->attributes != null) {
+            if (is_array($this->attributes)) {
+                foreach ($this->attributes as $subAttributes) {
                     $subAttributes->writeXML($xmlWriter);
                 }
-            }
-            else
-            {
+            } else {
                 $this->attributes->writeXML($xmlWriter);
             }
         }
         $xmlWriter->endElement();
     }
 }
-
-?>

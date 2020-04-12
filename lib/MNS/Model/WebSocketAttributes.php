@@ -3,6 +3,7 @@ namespace AliyunMNS\Model;
 
 use AliyunMNS\Constants;
 use AliyunMNS\Exception\MnsException;
+use XMLWriter;
 
 class WebSocketAttributes
 {
@@ -23,11 +24,9 @@ class WebSocketAttributes
         return $this->importanceLevel;
     }
 
-    public function writeXML(\XMLWriter $xmlWriter)
+    public function writeXML(XMLWriter $xmlWriter)
     {
-        $jsonArray = array(Constants::IMPORTANCE_LEVEL => $this->importanceLevel);
+        $jsonArray = [Constants::IMPORTANCE_LEVEL => $this->importanceLevel];
         $xmlWriter->writeElement(Constants::WEBSOCKET, json_encode($jsonArray));
     }
 }
-
-?>

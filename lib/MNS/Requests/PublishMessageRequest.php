@@ -4,6 +4,7 @@ namespace AliyunMNS\Requests;
 use AliyunMNS\Constants;
 use AliyunMNS\Requests\BaseRequest;
 use AliyunMNS\Traits\MessagePropertiesForPublish;
+use XMLWriter;
 
 class PublishMessageRequest extends BaseRequest
 {
@@ -11,11 +12,11 @@ class PublishMessageRequest extends BaseRequest
 
     private $topicName;
 
-    public function __construct($messageBody, $messageAttributes = NULL)
+    public function __construct($messageBody, $messageAttributes = null)
     {
-        parent::__construct('post', NULL);
+        parent::__construct('post', null);
 
-        $this->topicName = NULL;
+        $this->topicName = null;
         $this->messageBody = $messageBody;
         $this->messageAttributes = $messageAttributes;
     }
@@ -33,10 +34,10 @@ class PublishMessageRequest extends BaseRequest
 
     public function generateBody()
     {
-        $xmlWriter = new \XMLWriter;
+        $xmlWriter = new XMLWriter;
         $xmlWriter->openMemory();
         $xmlWriter->startDocument("1.0", "UTF-8");
-        $xmlWriter->startElementNS(NULL, "Message", Constants::MNS_XML_NAMESPACE);
+        $xmlWriter->startElementNS(null, "Message", Constants::MNS_XML_NAMESPACE);
         $this->writeMessagePropertiesForPublishXML($xmlWriter);
         $xmlWriter->endElement();
         $xmlWriter->endDocument();
@@ -45,7 +46,6 @@ class PublishMessageRequest extends BaseRequest
 
     public function generateQueryString()
     {
-        return NULL;
+        return null;
     }
 }
-?>

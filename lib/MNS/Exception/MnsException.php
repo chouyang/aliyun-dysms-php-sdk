@@ -1,24 +1,22 @@
 <?php
 namespace AliyunMNS\Exception;
 
-class MnsException extends \RuntimeException
+use RuntimeException;
+
+class MnsException extends RuntimeException
 {
     private $mnsErrorCode;
     private $requestId;
     private $hostId;
 
-    public function __construct($code, $message, $previousException = NULL, $mnsErrorCode = NULL, $requestId = NULL, $hostId = NULL)
+    public function __construct($code, $message, $previousException = null, $mnsErrorCode = null, $requestId = null, $hostId = null)
     {
         parent::__construct($message, $code, $previousException);
 
-        if ($mnsErrorCode == NULL)
-        {
-            if ($code >= 500)
-            {
+        if ($mnsErrorCode == null) {
+            if ($code >= 500) {
                 $mnsErrorCode = "ServerError";
-            }
-            else
-            {
+            } else {
                 $mnsErrorCode = "ClientError";
             }
         }
@@ -31,16 +29,13 @@ class MnsException extends \RuntimeException
     public function __toString()
     {
         $str = "Code: " . $this->getCode() . " Message: " . $this->getMessage();
-        if ($this->mnsErrorCode != NULL)
-        {
+        if ($this->mnsErrorCode != null) {
             $str .= " MnsErrorCode: " . $this->mnsErrorCode;
         }
-        if ($this->requestId != NULL)
-        {
+        if ($this->requestId != null) {
             $str .= " RequestId: " . $this->requestId;
         }
-        if ($this->hostId != NULL)
-        {
+        if ($this->hostId != null) {
             $str .= " HostId: " . $this->hostId;
         }
         return $str;
@@ -61,5 +56,3 @@ class MnsException extends \RuntimeException
         return $this->hostId;
     }
 }
-
-?>

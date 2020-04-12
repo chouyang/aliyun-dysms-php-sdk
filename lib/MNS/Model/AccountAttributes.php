@@ -2,6 +2,8 @@
 namespace AliyunMNS\Model;
 
 use AliyunMNS\Constants;
+use XMLReader;
+use XMLWriter;
 
 /**
  * Please refer to
@@ -13,7 +15,7 @@ class AccountAttributes
     private $loggingBucket;
 
     public function __construct(
-        $loggingBucket = NULL)
+        $loggingBucket = null)
     {
         $this->loggingBucket = $loggingBucket;
     }
@@ -28,30 +30,26 @@ class AccountAttributes
         return $this->loggingBucket;
     }
 
-    public function writeXML(\XMLWriter $xmlWriter)
+    public function writeXML(XMLWriter $xmlWriter)
     {
-        if ($this->loggingBucket !== NULL)
-        {
+        if ($this->loggingBucket !== null) {
             $xmlWriter->writeElement(Constants::LOGGING_BUCKET, $this->loggingBucket);
         }
     }
 
-    static public function fromXML(\XMLReader $xmlReader)
+    static public function fromXML(XMLReader $xmlReader)
     {
-        $loggingBucket = NULL;
+        $loggingBucket = null;
 
-        while ($xmlReader->read())
-        {
-            if ($xmlReader->nodeType == \XMLReader::ELEMENT)
-            {
+        while ($xmlReader->read()) {
+            if ($xmlReader->nodeType == XMLReader::ELEMENT) {
                 switch ($xmlReader->name) {
-                case 'LoggingBucket':
-                    $xmlReader->read();
-                    if ($xmlReader->nodeType == \XMLReader::TEXT)
-                    {
-                        $loggingBucket = $xmlReader->value;
-                    }
-                    break;
+                    case 'LoggingBucket':
+                        $xmlReader->read();
+                        if ($xmlReader->nodeType == XMLReader::TEXT) {
+                            $loggingBucket = $xmlReader->value;
+                        }
+                        break;
                 }
             }
         }
@@ -60,5 +58,3 @@ class AccountAttributes
         return $attributes;
     }
 }
-
-?>

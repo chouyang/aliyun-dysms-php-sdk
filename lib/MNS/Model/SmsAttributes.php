@@ -3,6 +3,7 @@ namespace AliyunMNS\Model;
 
 use AliyunMNS\Constants;
 use AliyunMNS\Exception\MnsException;
+use XMLWriter;
 
 /**
  * Please refer to
@@ -17,7 +18,7 @@ class SmsAttributes
     public $receiver;
 
     public function __construct(
-        $freeSignName, $templateCode, $smsParams=array(), $receiver=null)
+        $freeSignName, $templateCode, $smsParams = [], $receiver = null)
     {
         $this->freeSignName = $freeSignName;
         $this->templateCode = $templateCode;
@@ -65,36 +66,28 @@ class SmsAttributes
         return $this->receiver;
     }
 
-    public function writeXML(\XMLWriter $xmlWriter)
+    public function writeXML(XMLWriter $xmlWriter)
     {
-        $jsonArray = array();
-        if ($this->freeSignName !== NULL)
-        {
+        $jsonArray = [];
+        if ($this->freeSignName !== null) {
             $jsonArray[Constants::FREE_SIGN_NAME] = $this->freeSignName;
         }
-        if ($this->templateCode !== NULL)
-        {
+        if ($this->templateCode !== null) {
             $jsonArray[Constants::TEMPLATE_CODE] = $this->templateCode;
         }
-        if ($this->receiver !== NULL)
-        {
+        if ($this->receiver !== null) {
             $jsonArray[Constants::RECEIVER] = $this->receiver;
         }
 
-        if ($this->smsParams !== null)
-        {
-            if (!is_array($this->smsParams))
-            {
+        if ($this->smsParams !== null) {
+            if (!is_array($this->smsParams)) {
                 throw new MnsException(400, "SmsParams should be an array!");
             }
             $jsonArray[Constants::SMS_PARAMS] = json_encode($this->smsParams, JSON_FORCE_OBJECT);
         }
 
-        if (!empty($jsonArray))
-        {
+        if (!empty($jsonArray)) {
             $xmlWriter->writeElement(Constants::DIRECT_SMS, json_encode($jsonArray));
         }
     }
 }
-
-?>

@@ -29,12 +29,11 @@ class DeleteMessageRequest extends BaseRequest
 
     public function generateBody()
     {
-        return NULL;
+        return null;
     }
 
     public function generateQueryString()
     {
-        return http_build_query(array("ReceiptHandle" => $this->receiptHandle));
+        return http_build_query(["ReceiptHandle" => $this->receiptHandle]);
     }
 }
-?>
